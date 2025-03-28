@@ -1,13 +1,23 @@
-# Étape 1 : Build Angular
-FROM node:18 AS build
+# Use official Node image
+FROM node:16
 
+# Set working directory
 WORKDIR /app
-COPY frontend/package*.json ./
-RUN npm install
-COPY frontend .
-RUN npm run build -- --configuration=production
 
-# Étape 2 : Serveur Nginx
-FROM nginx:alpine
-COPY --from=build /app/dist/hotel-booking-app /usr/share/nginx/html
-COPY frontend/docker/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy package files first (caching optimization)
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy Angular app
+COPY . .
+
+# Build Angular (for production)
+RUN npm run build --prod
+
+# Expose port 4200 (dev) or 80 (prod)
+EXPOSE 4200
+
+# Start Angular dev server (for development)
+CMD ["npm", "start"]

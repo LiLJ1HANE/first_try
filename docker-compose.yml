@@ -1,39 +1,40 @@
 services:
-  # Base de données MySQL
-  db:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: hotel_db
-      MYSQL_USER: hotel_user
-      MYSQL_PASSWORD: hotel_password
-    volumes:
-      - mysql_data:/var/lib/mysql
-
-  # Back-end Laravel
+  # Laravel Backend (custom Dockerfile)
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "8000:80"
+      - "8000:80"  # Apache runs on 80 inside container
     volumes:
       - ./backend:/var/www/html
-    depends_on:
-      - db
     environment:
       DB_HOST: db
       DB_DATABASE: hotel_db
       DB_USERNAME: hotel_user
       DB_PASSWORD: hotel_password
+    depends_on:
+      - mysql
 
-  # Front-end Angular
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: hotel_reservation
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # Angular Frontend (custom Dockerfile)
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "4200:80"
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # Avoid overwriting container's node_modules
     depends_on:
       - backend
 
