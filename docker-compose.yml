@@ -1,42 +1,62 @@
 services:
-  # Laravel Backend (custom Dockerfile)
   backend:
     build:
-      context: ./backend
+      context: ./backend/laravel
       dockerfile: Dockerfile
+    container_name: backend
     ports:
-      - "8000:80"  # Apache runs on 80 inside container
-    volumes:
-      - ./backend:/var/www/html
+      - "8000:80"
     environment:
-      DB_HOST: db
-      DB_DATABASE: hotel_db
-      DB_USERNAME: hotel_user
-      DB_PASSWORD: hotel_password
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: hotel_reservation
+      DB_USERNAME: root
+      DB_PASSWORD: password
+    volumes:
+      - ./backend/laravel:/var/www/html
+      - ./backend/laravel/storage:/var/www/html/storage
+      - ./backend/laravel/bootstrap/cache:/var/www/html/bootstrap/cache
+    networks:
+      - webapp
     depends_on:
       - mysql
 
-  # MySQL Database
   mysql:
     image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: password
+    container_name: mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - webapp
+    environment: 
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
       MYSQL_DATABASE: hotel_reservation
+      MYSQL_ROOT_PASSWORD: your_secure_password
+      
+
     volumes:
       - mysql_data:/var/lib/mysql
 
-  # Angular Frontend (custom Dockerfile)
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    container_name: frontend
     ports:
       - "4200:4200"
     volumes:
       - ./frontend:/app
-      - /app/node_modules  # Avoid overwriting container's node_modules
+      - /app/node_modules
+    command: ["npm", "start"]
     depends_on:
-      - backend
+      - mysql
+    networks:
+      - webapp
+
+networks:
+  webapp:
+    driver: bridge
 
 volumes:
   mysql_data:
