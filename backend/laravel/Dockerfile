@@ -20,8 +20,15 @@ COPY . .
 
 RUN composer install
 
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html 
+
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 
 EXPOSE 80
 

@@ -17,3 +17,4 @@ docker-compose up -d --build
 Backend: http://localhost:8000
 Frontend: http://localhost:4200
 MySQL: localhost:3307
+j
