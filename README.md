@@ -12,28 +12,19 @@ A full-stack web application with Laravel backend, Angular frontend, and MySQL d
   - Pre-configured Apache/Nginx
 
 ## 📋 Prerequisites
-- Docker Engine 20.10+
 - Docker Compose 2.0+
-- Node.js 18+ (for frontend development)
+- Docker
 - Git
 
 ## 🛠️ Setup
 1. **Clone the repository**
-   ```bash
    git clone https://github.com/Taha7486/first_try.git
    cd first_try
-   cp backend/laravel/.env.example backend/laravel/.env
-
 2. **Start containers**
+   docker compose pull
+   docker compose up 
 
-   docker-compose up -d --build
-
-3. **Initialize Laravel**
-
-   docker exec -it backend php artisan key:generate
-   docker exec -it backend php artisan migrate
-
-4. **Access applications**
+3. **Access applications**
 
     Frontend: http://localhost:4300
 

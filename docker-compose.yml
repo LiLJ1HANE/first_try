@@ -1,10 +1,10 @@
 
 services:
   backend:
-    build:
-      context: ./backend/laravel
-      dockerfile: Dockerfile
-    container_name: backend
+    image: taha7486/backend:latest
+    #build:
+     # context: ./backend/laravel
+     # dockerfile: Dockerfile
     ports:
       - "8000:80"
     environment:
@@ -13,9 +13,6 @@ services:
       DB_DATABASE: hotel_reservation
       DB_USERNAME: root
       DB_PASSWORD: password
-    volumes:
-      - ./backend/laravel:/var/www/html
-      - /var/www/html/vendor
     networks:
       - webapp
     depends_on:
@@ -37,12 +34,11 @@ services:
       - mysql_data:/var/lib/mysql
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: taha7486/frontend:latest
+    #build:
+     # context: ./frontend
+     # dockerfile: Dockerfile
     container_name: frontend
-    environment:
-    - CHOKIDAR_USEPOLLING=true
     ports:
       - "4300:80"
     networks:
