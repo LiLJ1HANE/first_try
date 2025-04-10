@@ -13,8 +13,6 @@ services:
         DB_DATABASE: hotel_reservation
         DB_USERNAME: root
         DB_PASSWORD: password
-    volumes:
-        - ./backend/laravel/storage:/var/www/html/storage  
     networks:
         - webapp
     depends_on:
