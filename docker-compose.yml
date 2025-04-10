@@ -4,19 +4,21 @@ services:
     image: taha7486/backend:latest
     #build:
      # context: ./backend/laravel
-     # dockerfile: Dockerfile
+      #dockerfile: Dockerfile
     ports:
-      - "8000:80"
+        - "8000:80"
     environment:
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_DATABASE: hotel_reservation
-      DB_USERNAME: root
-      DB_PASSWORD: password
+        DB_HOST: mysql
+        DB_PORT: 3306
+        DB_DATABASE: hotel_reservation
+        DB_USERNAME: root
+        DB_PASSWORD: password
+    volumes:
+        - ./backend/laravel/storage:/var/www/html/storage  
     networks:
-      - webapp
+        - webapp
     depends_on:
-      - mysql
+        - mysql
 
   mysql:
     image: mysql:8.0
@@ -26,18 +28,17 @@ services:
     networks:
       - webapp
     environment: 
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
       MYSQL_DATABASE: hotel_reservation
       MYSQL_ROOT_PASSWORD: password
     volumes:
       - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
 
   frontend:
     image: taha7486/frontend:latest
     #build:
-     # context: ./frontend
-     # dockerfile: Dockerfile
+     #context: ./frontend
+     #dockerfile: Dockerfile
     container_name: frontend
     ports:
       - "4300:80"
