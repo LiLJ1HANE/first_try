@@ -27,10 +27,8 @@ cp backend/laravel/.env.example backend/laravel/.env
 # 3. Start all containers (will pull images automatically)
 docker compose up -d
 
-# 4. Generate Laravel app key (required only once)
-docker compose exec backend php artisan key:generate
 
-# 5. **Access applications**
+# 4. **Access applications**
 
     Frontend: http://localhost:4300
 
