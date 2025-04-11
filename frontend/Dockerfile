@@ -5,9 +5,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build -- --configuration=production && \
-    ls -la /app/dist && \
-    ls -la /app/dist/frontend
+RUN npm run build -- --configuration=production && 
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine

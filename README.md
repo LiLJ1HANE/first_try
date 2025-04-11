@@ -21,10 +21,10 @@ A full-stack web application with Laravel backend, Angular frontend, and MySQL d
 git clone https://github.com/Taha7486/first_try.git
 cd first_try
 
-# 2. Create Laravel .env file (only needed for local development)
-cp backend/laravel/.env.example backend/laravel/.env
 
-# 3. Start all containers (will pull images automatically)
+# 3. Start all containers 
+docker compose pull
+
 docker compose up -d
 
 

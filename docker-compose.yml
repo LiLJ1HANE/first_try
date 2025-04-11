@@ -5,6 +5,7 @@ services:
     #build:
      # context: ./backend/laravel
       #dockerfile: Dockerfile
+    container_name: backend
     ports:
         - "8000:80"
     environment:
