@@ -1,8 +1,9 @@
 services:
   backend:
-    build:
-      context: ./backend/laravel
-      dockerfile: Dockerfile
+    image: taha7486/hotel-backend:latest
+    #build:
+      #context: ./backend/laravel
+      #dockerfile: Dockerfile
     container_name: backend 
     environment:
         DB_HOST: mysql
