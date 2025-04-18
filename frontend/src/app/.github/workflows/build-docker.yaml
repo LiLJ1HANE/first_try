@@ -24,4 +24,4 @@ jobs:
       run: docker build ./api/ -t taha7486/hotel-backend:latest
 
     - name: Push Docker image (backend)
-      run: docker push taha7486/backend:latestm
+      run: docker push taha7486/hotel-backend:latestm
