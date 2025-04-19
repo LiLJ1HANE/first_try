@@ -1,16 +1,20 @@
 #!/bin/bash
 
-# Create .env if not exists
-if [ ! -f .env ]; then
-    echo "Creating .env from .env.example..."
-    cp .env.example .env
-fi
+# Wait for MySQL to be ready (important!)
+while ! mysqladmin ping -h"mysql" -P"3306" -u"root" -p"password" --silent; do
+    echo "Waiting for MySQL..."
+    sleep 2
+done
 
-# Generate app key
-php artisan key:generate
+# Copy .env if missing
+[ ! -f .env ] && cp .env.example .env
 
 # Fix permissions
+chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache
 
+# Run migrations
+php artisan migrate --force
+
 # Start Apache
-apache2-foreground
+exec apache2-foreground
