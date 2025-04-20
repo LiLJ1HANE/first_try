@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['api/**']
+    paths: ['backend/laravel/**']  # Updated to watch the correct folder
 
 jobs:
   publish_images:
@@ -20,8 +20,9 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    # Key change: Path updated to ./backend/laravel/
     - name: Build Docker image (backend)
-      run: docker build ./api/ -t taha7486/hotel-backend:v2
+      run: docker build ./backend/laravel/ -t taha7486/hotel-backend:v2
 
     - name: Push Docker image (backend)
       run: docker push taha7486/hotel-backend:v2
