@@ -21,7 +21,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker image (backend)
-      run: docker build ./api/ -t taha7486/hotel-backend:latest
+      run: docker build ./api/ -t taha7486/hotel-backend:v2
 
     - name: Push Docker image (backend)
-      run: docker push taha7486/hotel-backend:latest
+      run: docker push taha7486/hotel-backend:v2
