@@ -1,6 +1,6 @@
 services:
   backend:
-    image: taha7486/hotel-backend:v2
+    image: taha7486/hotel-backend:v3
     #build:
       #context: ./backend/laravel
       #dockerfile: Dockerfile
@@ -28,6 +28,7 @@ services:
       - /app/node_modules
     networks:
       - webapp
+
   mysql:
     image: mysql:8.0
     container_name: mysql
@@ -42,6 +43,7 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - webapp
+      
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
