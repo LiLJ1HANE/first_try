@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     curl \
     git \
+    default-mysql-client \ 
     && docker-php-ext-install pdo pdo_mysql zip
 
 # Apache rewrite module
@@ -14,6 +15,12 @@ RUN a2enmod rewrite
 
 # Set working directory and copy project
 WORKDIR /var/www/html
+
+# Copy entrypoint
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+
 COPY . /var/www/html
 
 # Composer install
@@ -32,8 +39,8 @@ RUN mkdir -p storage/framework/{sessions,views,cache} && \
     chown -R www-data:www-data storage bootstrap/cache && \
     chmod -R 775 storage bootstrap/cache
 
-# Copy entrypoint
-COPY ./entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+    RUN chown -R www-data:www-data /var/www/html/storage \
+    && chmod -R 775 /var/www/html/storage
+
 
 ENTRYPOINT ["/entrypoint.sh"]

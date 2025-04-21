@@ -1,16 +1,10 @@
 services:
   backend:
-    image: taha7486/hotel-backend:latest
+    image: taha7486/hotel-backend:v4
     #build:
       #context: ./backend/laravel
       #dockerfile: Dockerfile
     container_name: backend 
-    environment:
-        DB_HOST: mysql
-        DB_PORT: 3306
-        DB_DATABASE: hotel_reservation
-        DB_USERNAME: root
-        DB_PASSWORD: password
     ports:
       - "8000:80"
     volumes:
@@ -18,6 +12,8 @@ services:
       - vendor_data:/var/www/html/vendor
     depends_on:
       - mysql
+    networks:
+      - webapp
       
   frontend:
     image: taha7486/hotel-frontend:latest
@@ -32,21 +28,34 @@ services:
       - /app/node_modules
     networks:
       - webapp
+
   mysql:
     image: mysql:8.0
     container_name: mysql
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: hotel
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: hotel_reservation
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: laravel
       MYSQL_PASSWORD: laravel
     volumes:
       - db_data:/var/lib/mysql
     networks:
       - webapp
-
+      
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql  
+      PMA_PORT: 3306
+    ports:
+      - "8080:80" 
+    depends_on:
+      - mysql
+    networks:
+      - webapp 
 networks:
   webapp:
     driver: bridge
