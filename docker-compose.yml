@@ -30,15 +30,12 @@ services:
       - webapp
 
   mysql:
-    image: mysql:8.0
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
     container_name: mysql
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_DATABASE: hotel_reservation
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: laravel
     volumes:
       - db_data:/var/lib/mysql
     networks:
