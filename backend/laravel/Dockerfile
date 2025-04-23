@@ -20,7 +20,6 @@ WORKDIR /var/www/html
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-
 COPY . /var/www/html
 
 # Composer install
