@@ -6,8 +6,8 @@ on:
     branches: [main]
     paths:
       - 'backend/laravel/**'
-      - 'frontend/vuejs/**'
-      - 'services/api/**'
+      - 'frontend/**'
+      - 'mysql/**'
 
 jobs:
   publish_images:
@@ -36,13 +36,13 @@ jobs:
     - name: Build and push frontend image
       uses: docker/build-push-action@v5
       with:
-        context: ./frontend/vuejs
+        context: ./frontend
         push: true
         tags: taha7486/hotel-frontend:latest
 
-    - name: Build and push API service image
+    - name: Build and push mysql image
       uses: docker/build-push-action@v5
       with:
-        context: ./services/api
+        context: ./mysql
         push: true
-        tags: taha7486/hotel-api:latest
+        tags: taha7486/hotel-mysql:latest
