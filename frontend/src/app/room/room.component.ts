@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Room, ReservationRequest, ApiResponse } from '../interfaces/room.interface';
 import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-room',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.css']
 })

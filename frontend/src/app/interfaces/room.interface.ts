@@ -3,10 +3,9 @@ export interface Room {
     hotel_id: number;
     room_number: string;
     type: string;
-    price_per_night: number;
+    price_per_night: number;  // Note this is price_per_night, not just price
     is_available: boolean;
     capacity: number;
-    amenities?: string;
   }
   
   export interface ReservationRequest {

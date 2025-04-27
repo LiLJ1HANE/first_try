@@ -1,3 +1,57 @@
-<h1>
-    Room 
-</h1>
+<div class="room-container">
+    <h2>Liste des Chambres</h2>
+    
+    <!-- Liste des chambres disponibles -->
+    <div class="room-list">
+      @for (room of rooms; track room.id) {
+        <div class="room-card" 
+             [class.selected]="room === selectedRoom"
+             (click)="selectedRoom = room">
+             <h3>{{ room.room_number }} - {{ room.type }}</h3>
+             <p>Capacité: {{ room.capacity }} personne(s)</p>
+          <p>Prix: {{ room.price_per_night }}dh/nuit</p>
+          <p>Disponible: {{ room.is_available ? 'Oui' : 'Non' }}</p>
+        </div>
+      }
+    </div>
+  
+    <!-- Formulaire de réservation -->
+    @if (selectedRoom) {
+      <div class="reservation-form">
+        <!-- Changed from selectedRoom.name to selectedRoom.room_number -->
+        <h3>Réserver {{ selectedRoom.room_number }} ({{ selectedRoom.type }})</h3>
+        
+        <form (ngSubmit)="reserveRoom()">
+          <input type="hidden" 
+                 [(ngModel)]="reservationData.room_id" 
+                 [value]="selectedRoom.id" 
+                 name="room_id">
+          
+          <div class="form-group">
+            <label for="guest_name">Nom du client:</label>
+            <input type="text" id="guest_name" 
+                   [(ngModel)]="reservationData.guest_name" 
+                   name="guest_name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="check_in">Date d'arrivée:</label>
+            <input type="date" id="check_in" 
+                   [(ngModel)]="reservationData.check_in" 
+                   name="check_in" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="check_out">Date de départ:</label>
+            <input type="date" id="check_out" 
+                   [(ngModel)]="reservationData.check_out" 
+                   name="check_out" required>
+          </div>
+          
+          <button type="submit" [disabled]="!selectedRoom.is_available">
+            {{ selectedRoom.is_available ? 'Réserver' : 'Indisponible' }}
+          </button>
+        </form>
+      </div>
+    }
+  </div>
