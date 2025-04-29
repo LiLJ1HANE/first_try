@@ -1,16 +1,23 @@
 #!/bin/bash
 
-# Create .env if not exists
-if [ ! -f .env ]; then
-    echo "Creating .env from .env.example..."
-    cp .env.example .env
-fi
+# Copy .env if missing
+[ ! -f .env ] && cp .env.example .env
 
-# Generate app key
-php artisan key:generate
+# Wait for MySQL to be REALLY ready (not just accepting connections)
+echo "Waiting for MySQL to start..."
+timeout=30
+while ! mysqladmin ping -h mysql --silent; do
+    sleep 1
+    timeout=$((timeout - 1))
+    if [ $timeout -le 0 ]; then
+        echo "MySQL did not start in time!"
+        exit 1
+    fi
+done
+echo "MySQL is ready!"
 
-# Fix permissions
-chmod -R 775 storage bootstrap/cache
+# Run migrations
+php artisan migrate --force
 
 # Start Apache
-apache2-foreground
+exec apache2-foreground
