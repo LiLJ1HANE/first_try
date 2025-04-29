@@ -12,8 +12,8 @@ export interface Room {
 
 export interface RoomBooking {
   roomId: number;
-  roomName: string;
   roomType: string;
+  roomName: string;
   checkIn: Date;
   checkOut: Date;
   numberOfNights: number;
@@ -21,4 +21,4 @@ export interface RoomBooking {
   taxRate: number;
   totalPrice: number;
   guestCount: number;
-}
+} 
