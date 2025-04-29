@@ -308,8 +308,10 @@ export class RoomDetailComponent implements OnInit {
   ngOnInit() {
     const roomId = Number(this.route.snapshot.paramMap.get('id'));
     this.roomService.getRoomById(roomId).subscribe(room => {
-      this.room = room;
-      this.guestOptions = Array.from({length: room.capacity}, (_, i) => i + 1);
+      if (room) {
+        this.room = room;
+        this.guestOptions = Array.from({length: room.capacity}, (_, i) => i + 1);
+      }
     });
   }
 
