@@ -10,7 +10,7 @@ import { CartService } from '../services/cart.service';
   template: `
     <header class="header">
       <div class="header-content">
-        <a routerLink="/" class="logo">Hôtel Luxe</a>
+        <a routerLink="/" class="logo">Le Grand Hôtel </a>
         
         <nav class="nav-links">
           <a 
@@ -51,13 +51,13 @@ import { CartService } from '../services/cart.service';
   `,
   styles: [`
     .header {
-      background-color: #1a237e;
+      background-color:rgb(83, 197, 189); /* Darker blue for a modern look */
       color: white;
       padding: 1rem 0;
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow */
     }
 
     .header-content {
@@ -70,20 +70,21 @@ import { CartService } from '../services/cart.service';
     }
 
     .logo {
-      font-size: 1.5rem;
+      font-size: 1.8rem; /* Slightly larger font for emphasis */
       font-weight: bold;
       color: white;
       text-decoration: none;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s, transform 0.3s;
     }
 
     .logo:hover {
-      opacity: 0.8;
+      opacity: 0.9;
+      transform: scale(1.05); /* Subtle zoom effect */
     }
 
     .nav-links {
       display: flex;
-      gap: 2rem;
+      gap: 1.5rem; /* Adjusted spacing for better alignment */
       align-items: center;
     }
 
@@ -92,15 +93,18 @@ import { CartService } from '../services/cart.service';
       text-decoration: none;
       padding: 0.5rem 1rem;
       border-radius: 4px;
-      transition: background-color 0.3s;
+      font-size: 1rem; /* Slightly larger font for readability */
+      transition: background-color 0.3s, transform 0.3s;
     }
 
     .nav-links a:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.15); /* Softer hover effect */
+      transform: translateY(-2px); /* Subtle lift effect */
     }
 
     .nav-links a.active {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.25); /* Highlight active link */
+      font-weight: bold;
     }
 
     .cart-link {
@@ -109,36 +113,46 @@ import { CartService } from '../services/cart.service';
 
     .cart-badge {
       position: absolute;
-      top: -8px;
-      right: -8px;
-      background-color: #dc3545;
+      top: -10px;
+      right: -10px;
+      background-color: #f44336; /* Brighter red for better visibility */
       color: white;
       border-radius: 50%;
-      padding: 0.25rem 0.5rem;
+      padding: 0.3rem 0.6rem;
       font-size: 0.75rem;
       min-width: 1.5rem;
       text-align: center;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add depth */
     }
 
     .login-button {
-      background-color: #4caf50;
+      background-color: #4caf50; /* Green for positive action */
       color: white;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1.2rem;
       border-radius: 4px;
-      transition: background-color 0.3s;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: background-color 0.3s, transform 0.3s;
     }
 
     .login-button:hover {
       background-color: #45a049;
+      transform: translateY(-2px); /* Subtle lift effect */
     }
 
     @media (max-width: 768px) {
       .nav-links {
-        gap: 1rem;
+        gap: 1rem; /* Reduce spacing for smaller screens */
       }
 
       .nav-links a {
         padding: 0.5rem;
+        font-size: 0.9rem; /* Slightly smaller font for mobile */
+      }
+
+      .logo {
+        font-size: 1.5rem; /* Adjust logo size for mobile */
       }
     }
   `]
