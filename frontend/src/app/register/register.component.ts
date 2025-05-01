@@ -192,25 +192,21 @@ export class RegisterComponent {
   constructor(private http: HttpClient, private router: Router) {}
 
   onSubmit() {
+    // Vérifiez que tous les champs sont remplis
     if (!this.user.name || !this.user.email || !this.user.password || !this.user.password_confirmation) {
       this.errorMessage = 'Veuillez remplir tous les champs';
       return;
     }
 
-    if (this.user.password !== this.user.password_confirmation) {
-      this.errorMessage = 'Les mots de passe ne correspondent pas';
-      return;
-    }
-
+    // Envoyez les données de l'utilisateur au backend
     this.http.post(`${environment.apiUrl}/register`, this.user).subscribe({
       next: (response: any) => {
-        this.router.navigate(['/login'], {
-          queryParams: { registered: 'true' }
-        });
+        console.log('Inscription réussie :', response);
+        this.router.navigate(['/login']); // Redirigez vers la page de connexion après l'inscription
       },
       error: (error) => {
         console.error('Erreur lors de l\'inscription :', error);
-        this.errorMessage = error.error?.message || 'Une erreur est survenue lors de l\'inscription.';
+        this.errorMessage = error.error?.message || 'Une erreur est survenue. Veuillez réessayer.';
       }
     });
   }

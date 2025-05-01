@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class UserController extends Controller
@@ -35,23 +36,20 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        // Valider les données envoyées par le frontend
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed' // Vérifie que password_confirmation correspond
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Créer un nouvel utilisateur
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']) // Hacher le mot de passe
+            'password' => Hash::make($validatedData['password']),
         ]);
 
-        // Retourner une réponse JSON
         return response()->json([
-            'message' => 'Utilisateur créé avec succès',
+            'message' => 'Utilisateur enregistré avec succès',
             'user' => $user
         ], 201);
     }
