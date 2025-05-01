@@ -3,36 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User; // Importer le modèle User
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class UserController extends Controller
 {
     public function login(Request $request)
     {
-        // Valider les champs envoyés par le frontend
-        $incomingFields = $request->validate([
-            'loginnom' => 'required|string',
-            'loginmot_de_passe' => 'required|string'
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
 
-        // Vérifier les informations d'identification
-        if (auth()->attempt([
-            'name' => $incomingFields['loginnom'],
-            'password' => $incomingFields['loginmot_de_passe']
-        ])) {
-            // Si l'authentification réussit
-            $request->session()->regenerate();
+        $user = User::where('email', $validatedData['email'])->first();
+
+        if ($user && Hash::check($validatedData['password'], $user->password)) {
+            $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                 'message' => 'Connexion réussie',
-                'user' => auth()->user()
+                'token' => $token,
+                'user' => $user
             ], 200);
         }
 
-        // Si l'authentification échoue
         return response()->json([
-            'message' => 'Nom d\'utilisateur ou mot de passe incorrect'
+            'message' => 'Email ou mot de passe incorrect'
         ], 401);
     }
 
