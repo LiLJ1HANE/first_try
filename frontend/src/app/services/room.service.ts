@@ -17,7 +17,7 @@ export class RoomService {
       description: 'Magnifique suite avec vue panoramique sur la ville. Profitez d\'un espace généreux et d\'un confort optimal avec des équipements haut de gamme.',
       price: 2500,
       capacity: 4,
-      amenities: ['Wi-Fi gratuit', 'Climatisation', 'Mini-bar', 'Coffre-fort', 'Room service 24/7', 'TV LED 55"', 'Bureau de travail'],
+      amenities: ['Wi-Fi gratuit', 'Climatisation', 'Coffre-fort', 'Room service 24/7', 'TV LED 55"', 'Bureau de travail'],
       imageUrl: 'assets/images/room1.jpg',
       available: true
     },
@@ -28,7 +28,7 @@ export class RoomService {
       description: 'Chambre luxueuse offrant une vue imprenable sur l\'océan. Design moderne et élégant avec des finitions de haute qualité.',
       price: 1800,
       capacity: 2,
-      amenities: ['Vue sur mer', 'Balcon privé', 'Wi-Fi gratuit', 'Climatisation', 'Mini-bar', 'Service de conciergerie'],
+      amenities: ['Vue sur mer', 'Balcon privé', 'Wi-Fi gratuit', 'Climatisation', 'Service de conciergerie'],
       imageUrl: 'assets/images/room2.jpg',
       available: true
     },
@@ -39,7 +39,7 @@ export class RoomService {
       description: 'Suite romantique avec jacuzzi privé. Parfaite pour les couples en quête d\'une expérience unique et luxueuse.',
       price: 3000,
       capacity: 2,
-      amenities: ['Jacuzzi privé', 'Éclairage d\'ambiance', 'Wi-Fi gratuit', 'Mini-bar premium', 'Room service 24/7', 'Lit King size'],
+      amenities: ['Jacuzzi privé', 'Éclairage d\'ambiance', 'Wi-Fi gratuit', 'Room service 24/7', 'Lit King size'],
       imageUrl: 'assets/images/room3.jpg',
       available: true
     },
@@ -50,7 +50,7 @@ export class RoomService {
       description: 'Vue spectaculaire sur les montagnes depuis cette chambre deluxe spacieuse. Parfaite pour les amateurs de paysages naturels.',
       price: 2200,
       capacity: 3,
-      amenities: ['Vue montagne', 'Wi-Fi gratuit', 'Climatisation', 'Mini-bar', 'Bureau spacieux', 'Room service'],
+      amenities: ['Vue montagne', 'Wi-Fi gratuit', 'Climatisation', 'Bureau spacieux', 'Room service'],
       imageUrl: 'assets/images/room4.jpg',
       available: true
     },
@@ -61,7 +61,7 @@ export class RoomService {
       description: 'Suite executive avec espace de travail dédié et vue panoramique sur la ville. Idéale pour les voyageurs d\'affaires.',
       price: 2800,
       capacity: 2,
-      amenities: ['Bureau executive', 'Wi-Fi haut débit', 'Machine à café', 'Mini-bar premium', 'Service de pressing', 'Salle de réunion sur demande'],
+      amenities: ['Bureau executive', 'Wi-Fi haut débit', 'Machine à café', 'Service de pressing', 'Salle de réunion sur demande'],
       imageUrl: 'assets/images/room5.jpg',
       available: true
     }
