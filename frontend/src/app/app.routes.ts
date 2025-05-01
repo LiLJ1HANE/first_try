@@ -5,13 +5,15 @@ import { RoomDetailComponent } from './room-detail/room-detail.component';
 import { CartComponent } from './cart/cart.component';
 import { ContactComponent } from './contact/contact.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent }, // Page d'accueil
   { path: 'rooms', component: RoomsComponent },
   { path: 'rooms/:id', component: RoomDetailComponent },
   { path: 'cart', component: CartComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: '' }
+  { path: 'register', component: RegisterComponent },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' } // Redirection pour les routes non trouvées
 ];
