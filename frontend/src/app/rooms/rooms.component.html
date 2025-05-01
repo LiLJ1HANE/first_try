@@ -1,1 +1,52 @@
-<p>rooms works!</p>
+<div class="rooms-container">
+    <h1>Nos Chambres</h1>
+    
+    <div class="filter-controls">
+      <select [(ngModel)]="selectedType" (change)="filterRooms()">
+        <option value="all">Tous les types</option>
+        <option *ngFor="let type of roomTypes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+  
+    <div *ngIf="loadingAvailability" class="loading-indicator">
+      <p>Vérification de la disponibilité...</p>
+    </div>
+  
+    <div class="rooms-grid">
+      <div *ngFor="let room of filteredRooms" class="room-card">
+        <div class="room-image">
+          <img [src]="room.imageUrl" [alt]="room.name">
+        </div>
+        <div class="room-content">
+          <h2>{{ room.name }}</h2>
+          <span class="room-type" [class]="room.type.toLowerCase().replace(' ', '-')">
+            {{ room.type }}
+          </span>
+          <p class="description">{{ room.description }}</p>
+          
+          <div class="room-info">
+            <span class="capacity">Capacité: {{ room.capacity }} personne(s)</span>
+            <span class="price">{{ room.price | number }} MAD / nuit</span>
+          </div>
+  
+          <div class="amenities">
+            <span *ngFor="let amenity of room.amenities.slice(0, 4)" class="amenity-tag">
+              {{ amenity }}
+            </span>
+          </div>
+  
+          <div class="availability-status">
+            {{ getAvailabilityText(room.id) }}
+          </div>
+  
+          <button 
+            class="details-button" 
+            (click)="navigateToDetail(room.id)"
+            [disabled]="!isRoomAvailable(room.id)"
+          >
+            {{ isRoomAvailable(room.id) ? 'Voir les détails' : 'Non disponible' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

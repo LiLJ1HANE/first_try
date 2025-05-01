@@ -1,0 +1,47 @@
+name: Daily Availability Report
+
+on:
+  schedule:
+    - cron: '0 23 * * *'  # 11 PM UTC
+  workflow_dispatch:
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Generate report
+        run: |
+          # Get dates (today + next 7 days)
+          START_DATE=$(date +%Y-%m-%d)
+          END_DATE=$(date -d "+7 days" +%Y-%m-%d)
+          
+          # Call API endpoint
+          curl -s "http://localhost:8000/api/rooms/availability-report?start_date=$START_DATE&end_date=$END_DATE" > report.json
+          
+          # Create human-readable summary
+          echo "## Availability Report ($START_DATE to $END_DATE)" > summary.md
+          jq -r '.[] | "\(.date): \(.room_type) - \(.percentage_booked)% booked (\(.available_rooms)/\(.total_rooms) available)"' report.json >> summary.md
+          
+      - name: Send email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USER }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          to: elbarkoukialae@gmail.com
+          subject: "Daily Availability Report"
+          body: file://summary.md
+          attachments: report.json

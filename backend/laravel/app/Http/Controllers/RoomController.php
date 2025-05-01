@@ -3,61 +3,82 @@
 namespace App\Http\Controllers;
 
 use App\Models\Room;
+use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class RoomController extends Controller
 {
-    // Récupère toutes les chambres
+    /**
+     * Get all rooms
+     */
     public function index()
     {
-        return Room::with('hotel')->get();
+        return Room::all();
     }
 
-    // Récupère une chambre spécifique
+    /**
+     * Get specific room
+     */
     public function show($id)
     {
-        return Room::with('hotel')->findOrFail($id);
+        return Room::findOrFail($id);
     }
 
-    // Crée une nouvelle chambre
-    public function store(Request $request)
+    /**
+     * Generate availability report
+     */
+    public function availabilityReport(Request $request)
     {
-        $validated = $request->validate([
-            'hotel_id' => 'required|exists:hotels,id',
-            'room_number' => 'required|string|max:10',
-            'type' => 'required|string|max:50',
-            'price_per_night' => 'required|numeric|min:0',
-            'capacity' => 'required|integer|min:1',
-            'amenities' => 'nullable|string'
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date'
         ]);
 
-        $room = Room::create($validated);
-        return response()->json($room, 201);
+        $report = DB::table('rooms')
+            ->join('bookings', function($join) use ($request) {
+                $join->on('rooms.id', '=', 'bookings.room_id')
+                    ->where('bookings.check_out', '>=', $request->start_date)
+                    ->where('bookings.check_in', '<=', $request->end_date)
+                    ->whereNotIn('bookings.status', ['cancelled', 'no-show']);
+            })
+            ->select(
+                DB::raw('DATE(bookings.check_in) as date'),
+                'rooms.type as room_type',
+                DB::raw('COUNT(DISTINCT rooms.id) as total_rooms'),
+                DB::raw('COUNT(DISTINCT bookings.id) as booked_rooms'),
+                DB::raw('COUNT(DISTINCT rooms.id) - COUNT(DISTINCT bookings.id) as available_rooms'),
+                DB::raw('ROUND((COUNT(DISTINCT bookings.id) * 100.0 / COUNT(DISTINCT rooms.id)), 2) as percentage_booked')
+            )
+            ->groupBy('date', 'room_type')
+            ->orderBy('date')
+            ->orderBy('room_type')
+            ->get();
+
+        return response()->json($report);
     }
 
-    // Réserve une chambre
-    public function reserve(Request $request, $id)
+    /**
+     * Check specific room availability
+     */
+    public function checkAvailability($id, Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'check_in' => 'required|date',
-            'check_out' => 'required|date|after:check_in',
-            'guest_name' => 'required|string|max:100'
+            'check_out' => 'required|date|after:check_in'
         ]);
 
         $room = Room::findOrFail($id);
-        
-        if (!$room->is_available) {
-            return response()->json([
-                'message' => 'Cette chambre n\'est pas disponible'
-            ], 400);
-        }
+        $booked = Booking::where('room_id', $id)
+            ->where('check_out', '>=', $request->check_in)
+            ->where('check_in', '<=', $request->check_out)
+            ->whereNotIn('status', ['cancelled', 'no-show'])
+            ->count();
 
-        $room->update(['is_available' => false]);
-        
         return response()->json([
-            'message' => 'Chambre réservée avec succès',
-            'reservation' => $validated,
-            'room' => $room
+            'available' => $booked < $room->quantity,
+            'available_rooms' => $room->quantity - $booked
         ]);
     }
 }

@@ -1,0 +1,63 @@
+<div class="report-container">
+    <h2>Availability Report</h2>
+    
+    <div class="report-controls">
+      <div class="date-controls">
+        <label>Start Date:</label>
+        <input type="date" [(ngModel)]="startDate" (change)="onDateChange()">
+        
+        <label>End Date:</label>
+        <input type="date" [(ngModel)]="endDate" (change)="onDateChange()">
+      </div>
+  
+      <div class="type-filter">
+        <label>Room Type:</label>
+        <select [(ngModel)]="selectedRoomType" (change)="onFilterChange()">
+          <option value="all">All Types</option>
+          <option *ngFor="let type of ['Standard', 'Deluxe', 'Suite Familiale']" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
+  
+      <button class="export-btn" (click)="exportToCSV()">Export to CSV</button>
+    </div>
+  
+    <div *ngIf="isLoading" class="loading">Loading report data...</div>
+    
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  
+    <div class="report-table" *ngIf="!isLoading && filteredData.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Room Type</th>
+            <th>Total</th>
+            <th>Booked</th>
+            <th>Available</th>
+            <th>Occupancy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filteredData">
+            <td>{{ item.date | date }}</td>
+            <td>{{ item.roomType }}</td>
+            <td>{{ item.totalRooms }}</td>
+            <td>{{ item.bookedRooms }}</td>
+            <td>{{ item.availableRooms }}</td>
+            <td>
+              <div class="occupancy-bar" [style.width.%]="item.percentageBooked"></div>
+              {{ item.percentageBooked }}%
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div *ngIf="!isLoading && filteredData.length === 0" class="no-data">
+      No availability data found for the selected filters.
+    </div>
+  </div>
