@@ -1,49 +1,65 @@
 services:
   backend:
-    image: taha7486/hotel-backend:v4
-    #build:
-      #context: ./backend/laravel
-      #dockerfile: Dockerfile
-    container_name: backend 
-    ports:
-      - "8000:80"
-    volumes:
-      - ./backend/laravel:/var/www/html 
-      - vendor_data:/var/www/html/vendor
+    #image: taha7486/hotel-backend-prod:v2
+    build:
+      context: ./backend/laravel
+      dockerfile: Dockerfile
+    container_name: backend-prod
+    restart: unless-stopped
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - LOG_CHANNEL=stack
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=hotel_reservation
+      - DB_USERNAME=laravel
+      - DB_PASSWORD=laravel
     depends_on:
       - mysql
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - webapp
       
   frontend:
-    image: taha7486/hotel-frontend:latest
+    image: taha7486/hotel-frontend-prod:v2
     #build:
       #context: ./frontend
       #dockerfile: Dockerfile
-    container_name: frontend
-    environment:
-    - CHOKIDAR_USEPOLLING=true
+    container_name: frontend-prod
+    restart: unless-stopped
     ports:
-      - "4300:4200"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+     - "80:80"
+     - "443:443"
     networks:
       - webapp
+    depends_on:
+       backend:
+        condition: service_healthy
 
   mysql:
-    image: taha7486/hotel-mysql:v1
+    image: taha7486/hotel-mysql-prod:v2
     #build:
       #context: ./mysql
       #dockerfile: Dockerfile
-    container_name: mysql
+    container_name: mysql-prod
+    restart: unless-stopped
     ports:
       - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=laravel
+      - MYSQL_DATABASE=hotel_reservation
+      - MYSQL_USER=laravel
+      - MYSQL_PASSWORD=laravel
     volumes:
       - db_data:/var/lib/mysql
     networks:
       - webapp
-      
+  
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
@@ -56,10 +72,10 @@ services:
       - mysql
     networks:
       - webapp 
+    
 networks:
   webapp:
     driver: bridge
 
 volumes:
   db_data:
-  vendor_data:

@@ -1,16 +1,12 @@
-# frontend/Dockerfile
-
-FROM node:20
+# Étape de build Angular
+FROM node:20 AS build
 
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install -g @angular/cli
-RUN npm install
-
 COPY . .
+RUN npm install
+RUN npm run build --omit=dev
 
-EXPOSE 4200
-
-CMD ["npm", "start"]
+# Étape de production avec NGINX
+FROM nginx:alpine
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
