@@ -3,28 +3,48 @@
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
 }
 
 .contact-header {
   text-align: center;
   margin-bottom: 3rem;
+  animation: fadeInDown 1s ease;
 }
 
 .contact-header h1 {
   font-size: 2.5rem;
-  color: #333;
+  color: #2c3e50;
   margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  display: inline-block;
+}
+
+.contact-header h1::after {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 3px;
+  background: #4a90e2;
+  bottom: -10px;
+  left: 25%;
+  border-radius: 2px;
 }
 
 .contact-header p {
   font-size: 1.2rem;
   color: #666;
+  animation: fadeInUp 1s ease 0.3s both;
 }
 
 .contact-content {
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 2rem;
+  animation: fadeIn 1s ease 0.6s both;
 }
 
 .contact-info {
@@ -33,93 +53,155 @@
 }
 
 .info-card {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.9);
   padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .info-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 .info-card i {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #4a90e2;
   margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.info-card:hover i {
+  transform: scale(1.2);
 }
 
 .info-card h3 {
-  color: #333;
+  color: #2c3e50;
   margin-bottom: 0.5rem;
+  font-weight: 600;
 }
 
 .info-card p {
   color: #666;
   margin: 0;
+  line-height: 1.6;
 }
 
 .contact-form {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .form-group {
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: #2c3e50;
   font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
   border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
 .error-message {
   color: #e74c3c;
   font-size: 0.9rem;
   margin-top: 0.5rem;
+  animation: shake 0.5s ease;
 }
 
 button[type="submit"] {
-  background: #4a90e2;
+  background: linear-gradient(45deg, #4a90e2, #357abd);
   color: white;
   padding: 1rem 2rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
 }
 
 button[type="submit"]:hover {
-  background: #357abd;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
 }
 
 button[type="submit"]:disabled {
   background: #ccc;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
 }
 
 @media (max-width: 768px) {
@@ -129,5 +211,9 @@ button[type="submit"]:disabled {
   
   .contact-header h1 {
     font-size: 2rem;
+  }
+  
+  .contact-form {
+    padding: 1.5rem;
   }
 }
