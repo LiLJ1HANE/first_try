@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -137,6 +139,8 @@ export class RegisterComponent {
 
   errorMessage = '';
 
+  constructor(private http: HttpClient, private router: Router) {}
+
   onSubmit() {
     if (!this.user.name || !this.user.email || !this.user.password || !this.user.password_confirmation) {
       this.errorMessage = 'Veuillez remplir tous les champs';
@@ -148,7 +152,17 @@ export class RegisterComponent {
       return;
     }
 
-    this.errorMessage = 'Formulaire soumis avec succès (aucune interaction avec le backend).';
-    console.log('Données du formulaire :', this.user);
+    // Appel au backend
+    this.http.post('http://127.0.0.1:8000/api/register', this.user).subscribe({
+      next: (response: any) => {
+        console.log('Inscription réussie :', response);
+        this.errorMessage = 'Inscription réussie !'; // Message temporaire
+        this.router.navigate(['/login']); // Rediriger vers la page de connexion après l'inscription
+      },
+      error: (error) => {
+        console.error('Erreur lors de l\'inscription :', error);
+        this.errorMessage = error.error.message || 'Une erreur est survenue lors de l\'inscription.';
+      }
+    });
   }
 }
