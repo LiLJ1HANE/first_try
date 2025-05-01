@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -70,62 +71,111 @@ import { Router } from '@angular/router';
 
         <button type="submit" class="btn btn-primary">S'inscrire</button>
       </form>
+
+      <div class="login-link">
+        <p>Déjà un compte ?</p>
+        <button class="btn btn-secondary" (click)="navigateToLogin()">Se connecter</button>
+      </div>
     </div>
   `,
   styles: [`
-    .register-container {
-      max-width: 400px;
-      margin: 50px auto;
+    :host {
+      display: block;
+      min-height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('assets/images/hotel.jpg');
+      background-size: cover;
+      background-position: center;
       padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      background-color: #f9f9f9;
     }
 
-    h2 {
+    .register-container {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .register-container h2 {
       text-align: center;
-      margin-bottom: 20px;
+      color: rgb(76, 161, 103);
+      margin-bottom: 30px;
+      font-size: 2rem;
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 25px;
     }
 
-    label {
+    .form-group label {
       display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
     }
 
-    input {
+    .form-control {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 14px;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
     }
 
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
+    .form-control:focus {
+      outline: none;
+      border-color: rgb(76, 161, 103);
     }
 
     .error-message {
-      color: red;
-      font-size: 14px;
-      margin-bottom: 10px;
+      color: #e74c3c;
+      margin: 15px 0;
       text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background-color: rgb(76, 161, 103);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #3a8d5e;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: rgb(76, 161, 103);
+      border: 2px solid rgb(76, 161, 103);
+      margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(76, 161, 103, 0.1);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 25px;
+      color: #666;
+    }
+
+    .login-link p {
+      margin-bottom: 10px;
     }
   `]
 })
@@ -152,17 +202,20 @@ export class RegisterComponent {
       return;
     }
 
-    // Appel au backend
-    this.http.post('http://127.0.0.1:8000/api/register', this.user).subscribe({
+    this.http.post(`${environment.apiUrl}/register`, this.user).subscribe({
       next: (response: any) => {
-        console.log('Inscription réussie :', response);
-        this.errorMessage = 'Inscription réussie !'; // Message temporaire
-        this.router.navigate(['/login']); // Rediriger vers la page de connexion après l'inscription
+        this.router.navigate(['/login'], {
+          queryParams: { registered: 'true' }
+        });
       },
       error: (error) => {
         console.error('Erreur lors de l\'inscription :', error);
-        this.errorMessage = error.error.message || 'Une erreur est survenue lors de l\'inscription.';
+        this.errorMessage = error.error?.message || 'Une erreur est survenue lors de l\'inscription.';
       }
     });
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 }
