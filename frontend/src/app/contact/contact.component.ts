@@ -1,33 +1,36 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css']
+  styleUrls: ['./contact.component.css'],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class ContactComponent {
   contactForm: FormGroup;
-  submitted = false;
+  contactInfo = {
+    email: 'Hotel.Service@etu.uae.ac.ma',
+    phone: '+212765478102',
+    address: 'Université Abdelmalek Essaadi, Tétouan, Maroc'
+  };
 
-  constructor(private formBuilder: FormBuilder) {
-    this.contactForm = this.formBuilder.group({
-      name: ['', Validators.required],
+  constructor(private fb: FormBuilder) {
+    this.contactForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      subject: ['', Validators.required],
-      message: ['', Validators.required]
+      subject: ['', [Validators.required]],
+      message: ['', [Validators.required, Validators.minLength(10)]]
     });
   }
 
-  onSubmit(): void {
-    this.submitted = true;
-    
+  onSubmit() {
     if (this.contactForm.valid) {
-      // Envoyer le formulaire au backend
-      console.log('Formulaire soumis:', this.contactForm.value);
-      alert('Message envoyé avec succès!');
+      // Ici, vous pouvez ajouter la logique pour envoyer le formulaire
+      console.log(this.contactForm.value);
       this.contactForm.reset();
-      this.submitted = false;
     }
   }
 }
