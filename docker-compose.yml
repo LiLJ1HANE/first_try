@@ -1,6 +1,6 @@
 services:
   backend:
-    image: taha7486/hotel-backend-prod:v2
+    image: taha7486/hotel-backend-prod:v3
     #build:
       #context: ./backend/laravel
       #dockerfile: Dockerfile
