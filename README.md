@@ -27,16 +27,3 @@ A full-stack web application with Laravel backend, Angular frontend, and MySQL d
 - docker compose pull
 
 - docker compose up 
-
-- docker compose exec backend php artisan migrate
-
-
-# 4. **Access applications**
-
-  -  Frontend: http://localhost:4300
-
-  -  Backend: http://localhost:8000
-
-## Checks
-  - http://localhost:8000/api/example (Frontend-Backend Communication)
-  - http://localhost:8000/test-db     (Test API Endpoint)
